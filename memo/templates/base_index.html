@@ -21,7 +21,10 @@
             <li><a href="/gameuidemo">Game UI Demo</a></li>
             <li><a href="/accounts/login">Login</a></li>
             <li><a href="/accounts/signup">Signup</a></li>
+          	{% else %}
+          	<li> {{user.username}} </li>
           	{% endif %}
+          	
           </ul>
           <ul class="nav navbar-nav navbar-right">
           	{% if user.is_authenticated %}
