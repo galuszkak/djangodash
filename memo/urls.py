@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^$', 'game.views.home_view', name='home'),
+    url(r'^(?P<pk>\d+)/results/$', views.ResultsView.as_view(), name='results'),
     # url(r'^memo/', include('memo.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

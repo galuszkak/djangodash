@@ -13,4 +13,15 @@ def form_helper(request):
                                     StrictButton('Sign in', css_class='btn-default'),
                                     )
         context['form_helper'] = form_helper
-        return context
+    elif request.path.startswith('/accounts/signup'):
+        form_helper = BaseFormHelper()
+        form_helper.layout = Layout(
+                                    'username',
+                                    'email',
+                                    'password1',
+                                    'password2',
+                                    StrictButton('Sign up', css_class='btn-default'),
+                                    )
+        context['form_helper'] = form_helper
+        
+    return context
