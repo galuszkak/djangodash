@@ -11,8 +11,8 @@
 
         <div class="container container-main">
             <div class="container-canvas">
-                <canvas id="gamecanvas" width="800" height="480">
-                    This is my fallback content.
+                <canvas id="gamecanvas" width="1000" height="800">
+                This is my fallback content.
                 </canvas>
             </div>
         </div>
@@ -21,9 +21,5 @@
 {% endblock %}
 {% block js_import %}
     <script src="{{ STATIC_URL }}/js/fabric.js"></script>
-    <script id=main">
-        var canvas = new fabric.StaticCanvas('gamecanvas');
-
-
-    </script>
+    <script src="{{ STATIC_URL }}/js/game.js"></script>
 {% endblock %}

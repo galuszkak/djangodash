@@ -4,13 +4,15 @@
 
 .container-main {
     margin-top: 75px;
+    margin-bottom: 75px;
 }
 
 .container-canvas {
     margin: 0 auto;
-    width: 800px;
+    width: 1000px;
 }
 
 canvas {
     border: 1px solid #333;
+
 }

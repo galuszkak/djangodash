@@ -9213,7 +9213,7 @@ fabric.PatternBrush = fabric.util.createClass(fabric.PencilBrush, /** @lends fab
 
                 if (this._objects[i] &&
                     this._objects[i].visible &&
-                    this._objects[i].selectable &&
+                    //this._objects[i].selectable &&
                     this.containsPoint(e, this._objects[i])) {
 
                     if (this.perPixelTargetFind || this._objects[i].perPixelTargetFind) {
