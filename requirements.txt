@@ -4,3 +4,4 @@ South==0.8.2
 Pillow==1.7.8
 dj_database_url==0.2.1
 git+https://github.com/Solution4Future/django-socketio#egg=django-socketio
+django-allauth==0.13.0
