@@ -9,9 +9,9 @@ TEMPLATE_DEBUG = DEBUG
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 ADMINS = (
-     ('Kamil Gałuszka', 'galuszkak@gmail.com'),
-     ('Tomasz Kozłowski aka Rysiu', 'tkozlowski007@gmail.com'),
-     ('Tomasz Ptak aka Big Bird', 'tomasz.ptak@gmail.com'),
+    ('Kamil Gałuszka', 'galuszkak@gmail.com'),
+    ('Tomasz Kozłowski aka Rysiu', 'tkozlowski007@gmail.com'),
+    ('Tomasz Ptak aka Big Bird', 'tomasz.ptak@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -75,9 +75,9 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+# Put strings here, like "/home/html/static" or "C:/www/django/static".
+# Always use forward slashes, even on Windows.
+# Don't forget to use absolute paths, not relative paths.
 )
 
 # List of finder classes that know how to find static files in
@@ -85,7 +85,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -109,7 +109,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -146,15 +146,19 @@ INSTALLED_APPS = (
     'south',
     'game',
     'crispy_forms',
+    'django_socketio'
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
-LOGIN_REDIRECT_URL= '/'
+LOGIN_REDIRECT_URL = '/'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
-SOCIALACCOUNT_PROVIDERS = \
-    { 'google':
-        { 'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],
-          'AUTH_PARAMS': { 'access_type': 'online' } }}
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],
+        'AUTH_PARAMS': {'access_type': 'online'}
+    }
+}
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
@@ -188,4 +192,4 @@ LOGGING = {
 # MEMO SPECIFIC SETTINGS
 ##########################
 
-AUTH_USER_MODEL='game.MemoUser'
+AUTH_USER_MODEL = 'game.MemoUser'
