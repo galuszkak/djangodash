@@ -1,0 +1,35 @@
+{% extends 'base_index.html' %}
+{% block content %}
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h1>Memo GAME</h1>
+    </div>
+    <div class="row">
+    	<div class="col-md-6">
+	        <table id="playerTable" class="table table-hover">
+				<thead><tr><td><b>Player</b></td><td><b>State</b></td></tr></thead>			
+			</table>
+		</div>
+		<div class="col-md-6">
+	    	<h2>Games in progress</h2>
+	    </div>
+		
+    </div>
+
+{% endblock %}
+{% block js_import %}
+    <script src="{{ STATIC_URL }}/js/fabric.js"></script>
+
+<script>
+	$(document).ready(function(){
+		var json = '{"players" : [	{"username":"tomek","gamestate":0},{"username":"rysiek","gamestate":1}, {"username":"kamil","gamestate":2}]}';
+		obj = JSON.parse(json);
+		var tbl_body = "";
+		for (var i = 0; i < obj.players.length; i++) {
+			tbl_body += "<tr><td>" + obj.players[i].username + "</td>" + "<td>" + obj.players[i].gamestate + "</td></tr>";
+		}
+		$('#playerTable').append(tbl_body);
+	});
+</script>
+{% endblock %}
