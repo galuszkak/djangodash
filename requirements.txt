@@ -1,0 +1,4 @@
+Django==1.5.4
+psycopg2==2.5.1
+South==0.8.2
+Pillow==1.7.8
