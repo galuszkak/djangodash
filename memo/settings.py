@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'south',
     'game',
     'crispy_forms',
@@ -151,7 +152,10 @@ INSTALLED_APPS = (
 CRISPY_TEMPLATE_PACK = "bootstrap3"
 LOGIN_REDIRECT_URL= '/'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
-
+SOCIALACCOUNT_PROVIDERS = \
+    { 'google':
+        { 'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],
+          'AUTH_PARAMS': { 'access_type': 'online' } }}
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

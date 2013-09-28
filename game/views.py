@@ -10,3 +10,6 @@ def home_view(request):
 
 class GameDemoView(TemplateView):
     template_name = "game_demo_ui.html"
+    
+class SignupView(TemplateView):
+    template_name = "/"
