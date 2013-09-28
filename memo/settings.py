@@ -94,11 +94,13 @@ SECRET_KEY = 'w3d=ypmd^gtx9pryf5lpf=05uh^#)9e1=z78cckdv#rhk0^*qj'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
+    'game.context_processor.form_helper',
     'django.contrib.messages.context_processors.messages',
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
@@ -141,26 +143,12 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.bitly',
-    'allauth.socialaccount.providers.dropbox',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.linkedin',
-    'allauth.socialaccount.providers.openid',
-    'allauth.socialaccount.providers.persona',
-    'allauth.socialaccount.providers.soundcloud',
-    'allauth.socialaccount.providers.stackexchange',
-    'allauth.socialaccount.providers.twitch',
-    'allauth.socialaccount.providers.twitter',
-    'allauth.socialaccount.providers.vimeo',
-    'allauth.socialaccount.providers.vk',
-    'allauth.socialaccount.providers.weibo',
     'south',
     'game',
+    'crispy_forms',
 )
 
-
+CRISPY_TEMPLATE_PACK = "bootstrap3"
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
