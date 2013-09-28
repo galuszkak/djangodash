@@ -15,8 +15,8 @@ class Game(models.Model):
         ('CA', 'Cancelled'),
 
     ]
-    state = models.TextField(max_length=2, null=False, choices=STATUS_VALUES, default=STATUS_VALUES[0][0])
-    comment = models.TextField(max_length=255, null=True)
+    state = models.CharField(max_length=2, null=False, choices=STATUS_VALUES, default=STATUS_VALUES[0][0])
+    comment = models.CharField(max_length=255, null=True)
     host = models.ForeignKey(MemoUser, related_name='hosted_games_set')
     players = models.ManyToManyField(MemoUser)
 
@@ -31,9 +31,10 @@ class Statistic(models.Model):
         ('FTI', 'FinishTime'),
     ]
     game = models.ForeignKey(Game, null=False)
-    type = models.TextField(max_length=3, null=False, choices=STAT_TYPES)
+    type = models.CharField(max_length=3, null=False, choices=STAT_TYPES)
     player = models.ForeignKey(MemoUser, null=True)
-    value = models.TextField(max_length=10, null=False)
+    intValue = models.IntegerField(null=True)
+    charValue = models.CharField(max_length=100, null=True)
 
 
 class Configuration(models.Model):
@@ -42,7 +43,9 @@ class Configuration(models.Model):
         ('MTI', 'MoveTime'),
         ('TTI', 'TotalTime'),
         ('PRI', 'Private'),
+        ('PCO', 'PlayerCount'),
     ]
     game = models.ForeignKey(Game, null=False)
-    type = models.TextField(max_length=3, null=False, choices=CONFIG_TYPES)
-    value = models.TextField(max_length=10, null=False)
+    type = models.CharField(max_length=3, null=False, choices=CONFIG_TYPES)
+    intValue = models.IntegerField(null=True)
+    charValue = models.CharField(max_length=100, null=True)
