@@ -2,6 +2,7 @@
 # Django settings for memo project.
 import os
 import dj_database_url
+from django.conf.global_settings import AUTH_USER_MODEL
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,7 +12,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 ADMINS = (
      ('Kamil Gałuszka', 'galuszkak@gmail.com'),
      ('Tomasz Kozłowski aka Rysiu', 'tkozlowski007@gmail.com'),
-     ('Tomasz Ptak', 'tomasz.ptak@gmail.com'),
+     ('Tomasz Ptak aka Big Bird', 'tomasz.ptak@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -130,6 +131,13 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -148,14 +156,8 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.vimeo',
     'allauth.socialaccount.providers.vk',
     'allauth.socialaccount.providers.weibo',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
     'south',
+    'game',
 )
 
 
@@ -190,3 +192,9 @@ LOGGING = {
         },
     }
 }
+
+##########################
+# MEMO SPECIFIC SETTINGS
+##########################
+
+AUTH_USER_MODEL='game.MemoUser'
