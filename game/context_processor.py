@@ -1,5 +1,5 @@
 from .form_helper import BaseFormHelper
-from crispy_forms.layout import Layout
+from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import StrictButton
 
 def form_helper(request):
@@ -10,7 +10,7 @@ def form_helper(request):
                                     'login',
                                     'password',
                                     'remember',
-                                    StrictButton('Sign in', css_class='btn-default'),
+                                    Submit('Sign in', 'Sign in', css_class='btn-default'),
                                     )
         context['form_helper'] = form_helper
     elif request.path.startswith('/accounts/signup'):
@@ -20,7 +20,7 @@ def form_helper(request):
                                     'email',
                                     'password1',
                                     'password2',
-                                    StrictButton('Sign up', css_class='btn-default'),
+                                    Submit('Sign up', 'Sign up', css_class='btn-default'),
                                     )
         context['form_helper'] = form_helper
         

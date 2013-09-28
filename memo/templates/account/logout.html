@@ -1,0 +1,20 @@
+{% extends 'base_index.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<!-- Main component for a primary marketing message or call to action -->
+<div class="jumbotron">
+	<h1>Logout</h1> 
+</div>
+<div class="row">
+	
+<form method="post" action="{% url 'account_logout' %}">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
+  {% endif %}
+  <button type="submit">Sign Out</button>
+</form>
+
+		<p>You are logged out from awesome Memo Game</p>
+</div>
+{% endblock %}

@@ -149,7 +149,7 @@ INSTALLED_APPS = (
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
-
+LOGIN_REDIRECT_URL= '/'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging
