@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'south',
     'game',
     'crispy_forms',
+    'django_socketio'
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
