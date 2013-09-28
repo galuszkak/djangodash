@@ -1,10 +1,9 @@
 import re
 from django.conf import settings
 from django.conf.urls import patterns, include, url
-from django.conf.urls.static import static
 
 from django.contrib import admin
-from game.views import GameDemoView, SignupView 
+from game.views import GameDemoView
 
 
 admin.autodiscover()
@@ -23,6 +22,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^%s(?P<path>.*)$' % re.escape(settings.STATIC_URL.lstrip('/')),
-        view='django.views.static.serve', document_root=settings.STATIC_ROOT),
+        'django.views.static.serve', document_root=settings.STATIC_ROOT),
 )
 
