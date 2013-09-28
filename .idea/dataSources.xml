@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1044715817">
+  <component name="DataSourceManagerImpl" format="xml" hash="3825472508">
     <data-source source="LOCAL" name="Django default" uuid="603a57cd-1ff9-45c0-817c-4e6752b30f25">
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/mysite.db</jdbc-url>
-      <libraries />
+      <libraries>
+        <library>
+          <url>jar://$PROJECT_DIR$/../sqlite-jdbc-3.7.2.jar!/</url>
+        </library>
+        <library>
+          <url>file://$PROJECT_DIR$/../xerial-sqlite-license.txt</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="memodb" uuid="4c9e0ae3-f710-4224-9ed2-dc4701fef403">
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:mysite.db</jdbc-url>
+      <libraries>
+        <library>
+          <url>jar://$PROJECT_DIR$/../sqlite-jdbc-3.7.2.jar!/</url>
+        </library>
+        <library>
+          <url>file://$PROJECT_DIR$/../xerial-sqlite-license.txt</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>

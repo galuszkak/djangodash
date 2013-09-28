@@ -2,9 +2,8 @@
 # Django settings for memo project.
 import os
 import dj_database_url
-from django.conf.global_settings import AUTH_USER_MODEL
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))

@@ -6,5 +6,19 @@
 
         <p>What were you expecting? A Game? Please.</p>
     </div>
+    <div>
+        <h1>Le Game</h1>
 
+        <div class="container container-main">
+            <div class="container-canvas">
+                <canvas id="gamecanvas" width="800" height="480">
+                    This is my fallback content.
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js_import %}
+    <script src="{{ STATIC_URL }}/js/fabric.js"></script>
 {% endblock %}
