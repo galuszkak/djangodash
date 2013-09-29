@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView, View
+from django.contrib.auth.decorators import login_required
 from braces.views import LoginRequiredMixin
 from .models import Game
 
