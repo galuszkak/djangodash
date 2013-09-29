@@ -11,6 +11,11 @@ def home_view(request):
 
 class GameDemoView(TemplateView):
     template_name = "game_demo_ui.html"
-    
+
+
+class AboutView(TemplateView):
+    template_name = "about.html"
+
+
 class MainView(LoginRequiredMixin, TemplateView):
     template_name = "main_view.html"

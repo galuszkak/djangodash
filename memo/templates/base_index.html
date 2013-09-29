@@ -16,12 +16,16 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/gameuidemo">Game UI Demo</a></li>
+              <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a></li>
+              <li{% if request.path == '/about/' %} class="active"{% endif %}><a href="/about">About</a></li>
+              <li{% if request.path == '/gameuidemo/' %} class="active"{% endif %}><a href="/gameuidemo">Game UI
+                  Demo</a></li>
               {% if not user.is_authenticated %}
-                  <li><a href="/accounts/login">Login</a></li>
-                  <li><a href="/accounts/signup">Signup</a></li>
-          	{% else %}
+                  <li{% if request.path == '/accounts/login/' %} class="active"{% endif %}><a href="/accounts/login">Login</a>
+                  </li>
+                  <li{% if request.path == '/accounts/signup/' %} class="active"{% endif %}><a href="/accounts/signup">Signup</a>
+                  </li>
+              {% else %}
                   <li><a>Logged in as {{ user.username }}</a></li>
                   {% if user.is_superuser %}
 
