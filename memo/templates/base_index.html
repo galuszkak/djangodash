@@ -12,7 +12,7 @@
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Memo Game!</a>
+            <a class="navbar-brand" href="/">Memo Game!</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -23,6 +23,10 @@
                   <li><a href="/accounts/signup">Signup</a></li>
           	{% else %}
                   <li><a>Logged in as {{ user.username }}</a></li>
+                  {% if user.is_superuser %}
+
+                      <li><a href="/admin">Admin</a></li>
+                  {% endif %}
               {% endif %}
 
           </ul>
