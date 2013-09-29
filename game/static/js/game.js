@@ -3,6 +3,17 @@
  * Created by tptak on 9/28/13.
  */
 
+$(document).ready(function() {
+	var username = $("#username").text();
+	var usocket = io.connect('/users');
+
+	usocket.emit('join',{
+		'username': username,
+		'gamestate': 2,
+	});
+
+});
+
 
 var canvas = new fabric.Canvas('gamecanvas');
 

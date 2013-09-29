@@ -16,8 +16,8 @@ class UserNamespace(BaseNamespace, BroadcastMixin):
 
     def on_join(self, user):
         #import ipdb; ipdb.set_trace();
-        print "OnJoin SessionId " + self.socket.sessid
-        user['gamestate'] = GAME_STATES['AVAILABLE']
+        if not 'gamestate' in user:
+            user['gamestate'] = GAME_STATES['AVAILABLE']
         if any(filter(lambda u: u['username'] == user['username'], self.users)):
             self.error("user_connected", "User is connected")     
             self.logged_in[user['username']] = self.socket.sessid
@@ -29,7 +29,6 @@ class UserNamespace(BaseNamespace, BroadcastMixin):
         print self.users
         self.emit('join', self.users)
         
-
     def recv_disconnect(self):
         user_list = filter(lambda (user, sessid):sessid==self.socket.sessid, self.logged_in.items())
 

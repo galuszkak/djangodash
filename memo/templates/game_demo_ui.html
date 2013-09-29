@@ -1,4 +1,5 @@
 {% extends 'base_index.html' %}
+{% load socketio_tags %}
 {% block content %}
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
@@ -17,9 +18,10 @@
             </div>
         </div>
     </div>
-
+<div id="username">{{ user.username }}</div>
 {% endblock %}
 {% block js_import %}
+{% socketio %}
     <script src="{{ STATIC_URL }}/js/fabric.js"></script>
     <script src="{{ STATIC_URL }}/js/game.js"></script>
 {% endblock %}
