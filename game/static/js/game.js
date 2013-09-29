@@ -4,6 +4,11 @@
  */
 
 $(document).ready(function() {
+
+
+    game = new Game(6, 6, canvas);
+
+
     if (interactiveMode) {
         var username = $("#username").text();
         var game_id = window.location.pathname.split('/')[2];
@@ -394,5 +399,3 @@ Game.prototype._preparePictures = function () {
         p.push('/static/img/tiles/' + im[i]);
     }
 };
-
-var game = new Game(6, 6, canvas);
