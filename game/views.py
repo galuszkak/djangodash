@@ -16,7 +16,6 @@ class GameDemoView(TemplateView):
 
 
 class GameView(View):
-    game_id = None
     template_name = "game_ui.html"
 
 
@@ -30,4 +29,4 @@ class MainView(LoginRequiredMixin, TemplateView):
 @login_required
 def create_game(request):
     game= Game.objects.create()
-    return redirect('/game/%d' % game.id)
+    return redirect('/game/%d/' % game.id)
