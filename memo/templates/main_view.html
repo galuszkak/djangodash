@@ -8,12 +8,13 @@
     <div class="row">
     	<div class="col-md-6">
 	        <table id="playerTable" class="table table-hover">
-				<thead><tr><td><b>Player</b></td><td><b>State</b></td></tr></thead>			
+				<thead><tr><td><b>Player</b></td><td><b>State</b></td><td>req</td></tr></thead>			
 			</table>
 		</div>
 		<div class="col-md-6">
 	    	<h2>Games in progress</h2>
 	    </div>
+
 		
     </div>
 
@@ -23,13 +24,32 @@
 
 <script>
 	$(document).ready(function(){
-		var json = '{"players" : [	{"username":"tomek","gamestate":0},{"username":"rysiek","gamestate":1}, {"username":"kamil","gamestate":2}]}';
-		obj = JSON.parse(json);
-		var tbl_body = "";
-		for (var i = 0; i < obj.players.length; i++) {
-			tbl_body += "<tr><td>" + obj.players[i].username + "</td>" + "<td>" + obj.players[i].gamestate + "</td></tr>";
-		}
-		$('#playerTable').append(tbl_body);
+		//var json = '{"players" : [	{"username":"tomek","gamestate":0},{"username":"rysiek","gamestate":1}, {"username":"kamil","gamestate":2}]}';
+		
+		var usocket = io.connect('/users');
+		
+		usocket.on('join', function(users){
+			var tbl_body = "";
+			var button = "<button/>Small button</button>";
+			for (var i = 0; i < users.length; i++) {
+				tbl_body += "<tr><td>" + users[i].username + "</td>" + "<td>" + users[i].gamestate + "</td></tr>";
+			}
+			$('#playerTable').append(tbl_body);	
+		});		
+		
+		usocket.on('connected', function(user) {
+			var tbl_body = "";
+			var button = "<button/>Small button</button>";
+			tbl_body += "<tr><td>" + user.username + "</td>" + "<td>" + user.gamestate + "</td></tr>";
+			$('#playerTable').append(tbl_body);	
+		});
+		
+		
+		usocket.emit('join', {'username':'rysiek'});			
+		
 	});
+	
+	
+	
 </script>
 {% endblock %}
