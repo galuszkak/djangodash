@@ -46,12 +46,13 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     """
     {
     game_id: {
-        users: []
+        users: [{'username': '', 'sessid': '' }, {'username': '', 'sessid': '' }]
         game_board: [[]]
     }
 
     """
     games = {}
+
     def on_join(self, game_data):
         pass
 
@@ -61,3 +62,38 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     def on_report_result(self, tile):
         pass
 
+    def get_receiver(self, game_id, username):
+        for user in self.games[game_id]['users']:
+            if user['username'] == username:
+                sessid = user['sessid']
+        return sessid
+
+    def get_players(self, game_id):
+        return [user['sessid'] for user in self.games[game_id]['users']]
+
+    def broadcast_to_user(self, event, receiver_sessid, *args):
+        """
+        This is sent to all in the sockets in this particular Namespace,
+        including itself.
+        """
+        pkt = dict(type="event",
+                   name=event,
+                   args=args,
+                   endpoint=self.ns_name)
+
+        for sessid, socket in self.socket.server.sockets.iteritems():
+            if sessid == receiver_sessid:
+                socket.send_packet(pkt)
+
+    def broadcast_to_players(self, event, receivers_sessid, *args):
+        """
+        (ses_id, ses_id)
+        """
+        pkt = dict(type="event",
+                   name=event,
+                   args=args,
+                   endpoint=self.ns_name)
+
+        for sessid, socket in self.socket.server.sockets.iteritems():
+            if sessid in receivers_sessid:
+                socket.send_packet(pkt)
