@@ -18,8 +18,8 @@
           <ul class="nav navbar-nav">
               <li{% if request.path == '/' %} class="active"{% endif %}><a href="/">Home</a></li>
               <li{% if request.path == '/about/' %} class="active"{% endif %}><a href="/about">About</a></li>
-              <li{% if request.path == '/gameuidemo/' %} class="active"{% endif %}><a href="/gameuidemo">Game UI
-                  Demo</a></li>
+              <li{% if request.path == '/singlegame/' %} class="active"{% endif %}><a href="/singlegame">Play on your
+                  own</a></li>
               {% if not user.is_authenticated %}
                   <li{% if request.path == '/accounts/login/' %} class="active"{% endif %}><a href="/accounts/login">Login</a>
                   </li>

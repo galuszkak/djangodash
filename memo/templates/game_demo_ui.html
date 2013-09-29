@@ -2,26 +2,21 @@
 {% load socketio_tags %}
 {% block content %}
     <!-- Main component for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <h1>Get real.</h1>
-
-        <p>What were you expecting? A Game? Please.</p>
-    </div>
     <div>
         <h1>Le Game</h1>
 
         <div class="container container-main">
             <div class="container-canvas">
                 <canvas id="gamecanvas" width="600" height="600">
-                This is my fallback content.
+                    This is my fallback content.
                 </canvas>
             </div>
         </div>
     </div>
-<div id="username">{{ user.username }}</div>
+    <div id="username">{{ user.username }}</div>
 {% endblock %}
 {% block js_import %}
-{% socketio %}
+    {% socketio %}
     <script src="{{ STATIC_URL }}/js/fabric.js"></script>
     <script>var interactiveMode = false;</script>
     <script src="{{ STATIC_URL }}/js/game.js"></script>

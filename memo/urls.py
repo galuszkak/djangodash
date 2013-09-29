@@ -17,7 +17,8 @@ urlpatterns = patterns('',
     url("", include("django_socketio.urls")),
 
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^gameuidemo/$', GameDemoView.as_view()),
+    url(r'^singlegame/$', GameDemoView.as_view()),
+    url(r'^game/$', GameDemoView.as_view()),
     url(r'^about/$', AboutView.as_view()),
     url(r'^mainview/$', MainView.as_view()),
 
