@@ -9,7 +9,7 @@ $(document).ready(function() {
 			tbl_body += "<tr id='" + users[i].username + "'><td>" + users[i].username + "</td>" + "<td>" + users[i].gamestate + "</td>";
 
 			if(username == users[i].username) {
-				tbl_body += "<td><a href=\"/gameuidemo\" class=\"btn btn-info\">Create game.</a></td>";
+				tbl_body += "<td><a href=\"/create_game\" class=\"btn btn-info\">Create game.</a></td>";
 				continue;
 			}
 			
@@ -28,12 +28,20 @@ $(document).ready(function() {
 	usocket.on('connected', function(user) {
 		var tbl_body = "";
 		tbl_body += "<tr id='" + user.username + "'><td>" + user.username + "</td>" + "<td>" + user.gamestate + "</td>";
+		
+		if(user == users[i].username) {
+			tbl_body += "<td><a href=\"/create_game\" class=\"btn btn-info\">Create game.</a></td>";
+			tbl_body += "</tr>";
+			$('#playerTable').append(tbl_body);
+			return;
+		}		
+		
 		if (user.gamestate == 1) {
-			tbl_body += "<td><button type=\"button\" class=\"btn btn-success\">Free. Invite me to play.</button></td>";
+			tbl_body += "<td></td>";
 		} else if (user.gamestate == 2) {
-			tbl_body += "<td><button type=\"button\" class=\"btn btn-danger\">I'm playing. Click to watch</button></td>";
+			tbl_body += "<td><button type=\"button\" class=\"btn btn-danger\">I'm playing. Do not disturb :)</button></td>";
 		} else {
-			tbl_body += "<td><button type=\"button\" class=\"btn btn-warning\">Waiting</button></td>";
+			tbl_body += "<td><button type=\"button\" class=\"btn btn-warning\">Waiting. Click to play with me :)</button></td>";
 		}
 		tbl_body += "</tr>";
 		$('#playerTable').append(tbl_body);
