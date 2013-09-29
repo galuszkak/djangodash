@@ -6,15 +6,20 @@
 $(document).ready(function() {
     if (interactiveMode) {
         var username = $("#username").text();
+        var game_id = window.location.pathname.split('/')[2];
         var usocket = io.connect('/users');
         var gsocket = io.connect('/game');
 	
 		gsocket.on('start', function() {
-			usocket.emit('join', {
-            'username': username,
-            'gamestate': 2,
+            usocket.emit('join', {
+                'username': username,
+                'gamestate': 2
+            });
         });
-		});
+        gsocket.emit('join', {
+            'username': username,
+            'game_id': game_id
+        });
 
         usocket.emit('join', {
             'username': username,
@@ -244,7 +249,7 @@ function Game(sizeX, sizeY, canvas) {
 
     this.isCallbackEnabled = true;
 
-    this.myMove = true;
+    this.myMove = false;
 
     this._preparePictures();
 
@@ -390,35 +395,4 @@ Game.prototype._preparePictures = function () {
     }
 };
 
-
-function sampleFill(canvas) {
-
-    var tiles = {};
-
-    canvas.on('mouse:down', function (options) {
-        if (options.target) {
-            var target = tiles[options.target['id']];
-            target.toggle();
-        }
-    });
-
-    var rows = 8;
-    var cols = 10;
-
-    for (var c = 0, r = 0; r < rows;) {
-
-        var tile = new Tile(r + '-' + c, 50 + c * 100, 50 + r * 100, 95, canvas, null);
-        tile.putOnBoard();
-        tile.addToCallbackCollection(tiles);
-
-        if (c === cols) {
-            r++;
-            c = 0;
-        } else {
-            c++;
-        }
-    }
-}
-
-//sampleFill(canvas);
 var game = new Game(6, 6, canvas);

@@ -5,7 +5,7 @@ from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
 
 
-def prepare_tiles_assignment(self):
+def prepare_tiles_assignment():
     tiles_assignment = {}
     picture_indices = range(0, 40)
     random.shuffle(picture_indices)
@@ -13,7 +13,7 @@ def prepare_tiles_assignment(self):
     random.shuffle(picture_indices)
     for i in range(0, 6):
         for j in range(0, 6):
-            self.tiles_assignment['%d-%d' % (i, j)] = picture_indices[i * 6 + j]
+            tiles_assignment['%d-%d' % (i, j)] = picture_indices[i * 6 + j]
     return tiles_assignment
 
 
@@ -40,6 +40,13 @@ class UserNamespace(BaseNamespace, BroadcastMixin):
             self.users.append(user)
             print 'JOIN ' + user['username']
             self.broadcast_event_not_me('connected', user)
+        if 'gamestate' in user and user['gamestate'] == 2:
+            self.broadcast_event_not_me('left', user)
+            user_to_remove = [u for u in self.users if user['username'] == u['username']][0]
+            self.users.remove(user_to_remove)
+            self.users.append(user)
+            self.broadcast_event_not_me('connected', user)
+
         print self.users
         self.emit('join', self.users)
         
@@ -61,7 +68,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     {
     game_id: {
         users: [{'username': '', 'sessid': '' }, {'username': '', 'sessid': '' }]
-        game_board: [[]]
+        game_board: {}
     }
 
     """
@@ -70,16 +77,17 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     def on_join(self, game_data):
         username = game_data['username']
         game_id = game_data['game_id']
-        if game_id in games:
-            games[game_id]['username'].append({'username':username, 'sessid': self.socket.sessid})
-            self.emit('start')
+        if game_id in self.games:
+            self.games[game_id]['users'].append({'username': username, 'sessid': self.socket.sessid})
+            self.broadcast_to_players('start', self.get_players(game_id))
         else:
-            games[game_id] = {
-                              'users': [{'username':username, 'sessid': self.socket.sessid}],
-                              'game_board': []
-                              }
-        
-        
+            tiles = prepare_tiles_assignment()
+            self.games[game_id] = {
+                'game_board': tiles,
+                'users': [{'username': username, 'sessid': self.socket.sessid}],
+            }
+
+
     def on_report_click(self, tile):
         pass
 
