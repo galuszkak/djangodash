@@ -14,7 +14,7 @@ class Game(models.Model):
     ]
     state = models.CharField(max_length=2, null=False, choices=STATUS_VALUES, default=STATUS_VALUES[0][0])
     comment = models.CharField(max_length=255, null=True)
-    host = models.ForeignKey(MemoUser, related_name='hosted_games_set')
+    host = models.ForeignKey(MemoUser, related_name='hosted_games_set', null=True)
     players = models.ManyToManyField(MemoUser)
 
 

@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView, View
 from braces.views import LoginRequiredMixin
-
+from .models import Game
 
 def home_view(request):
     return render_to_response('index.html', {}, context_instance=RequestContext(request))
@@ -24,3 +24,8 @@ class AboutView(TemplateView):
 
 class MainView(LoginRequiredMixin, TemplateView):
     template_name = "main_view.html"
+    
+@login_required
+def create_game(request):
+    game= Game.objects.create()
+    return redirect('/game/%d' % game.id)
