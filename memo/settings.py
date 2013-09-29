@@ -6,6 +6,12 @@ import dj_database_url
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_HOST_USER='rychulinux@gmail.com'
+EMAIL_HOST_PASSWORD='DJANGO__dash44'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 ADMINS = (
