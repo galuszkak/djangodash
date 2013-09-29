@@ -10,7 +10,8 @@ $(document).ready(function() {
 
         usocket.emit('join', {
             'username': username,
-            'gamestate': 3
+            'gamestate': 3,
+            'url': window.location.pathname
         });
     } else {
         interactiveMode = false;

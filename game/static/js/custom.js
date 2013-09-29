@@ -29,7 +29,7 @@ $(document).ready(function() {
 		var tbl_body = "";
 		tbl_body += "<tr id='" + user.username + "'><td>" + user.username + "</td>" + "<td>" + user.gamestate + "</td>";
 		
-		if(user == users[i].username) {
+		if(user == user.username) {
 			tbl_body += "<td><a href=\"/create_game\" class=\"btn btn-info\">Create game.</a></td>";
 			tbl_body += "</tr>";
 			$('#playerTable').append(tbl_body);
@@ -41,7 +41,7 @@ $(document).ready(function() {
 		} else if (user.gamestate == 2) {
 			tbl_body += "<td><button type=\"button\" class=\"btn btn-danger\">I'm playing. Do not disturb :)</button></td>";
 		} else {
-			tbl_body += "<td><button type=\"button\" class=\"btn btn-warning\">Waiting. Click to play with me :)</button></td>";
+			tbl_body += "<td><a href='" + user.url + "' class=\"btn btn-warning\">Waiting. Click to play with me :)</a></td>";
 		}
 		tbl_body += "</tr>";
 		$('#playerTable').append(tbl_body);
