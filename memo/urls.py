@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^singlegame/$', GameDemoView.as_view()),
-    url(r'^game/$', GameDemoView.as_view()),
+    url(r'^game/(?P<game_id>\d+)/$', GameView.as_view()),
     url(r'^about/$', AboutView.as_view()),
     url(r'^mainview/$', MainView.as_view()),
 
