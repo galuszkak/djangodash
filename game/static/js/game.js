@@ -7,6 +7,14 @@ $(document).ready(function() {
     if (interactiveMode) {
         var username = $("#username").text();
         var usocket = io.connect('/users');
+        var gsocket = io.connect('/game');
+	
+		gsocket.on('start', function() {
+			usocket.emit('join', {
+            'username': username,
+            'gamestate': 2,
+        });
+		});
 
         usocket.emit('join', {
             'username': username,
