@@ -8,12 +8,9 @@ class MemoUser(AbstractUser):
 # Create your models here.
 class Game(models.Model):
     STATUS_VALUES = [
-        ('IN', 'Initial'),
         ('WA', 'WaitingForPlayers'),
         ('PR', 'InProgress'),
         ('FI', 'Finished'),
-        ('CA', 'Cancelled'),
-
     ]
     state = models.CharField(max_length=2, null=False, choices=STATUS_VALUES, default=STATUS_VALUES[0][0])
     comment = models.CharField(max_length=255, null=True)

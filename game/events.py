@@ -39,4 +39,25 @@ class UserNamespace(BaseNamespace, BroadcastMixin):
             self.broadcast_event_not_me('left', user)
         return True
     
-    
+
+
+@Namespace('/game')
+class GameNamespace(BaseNamespace, BroadcastMixin):
+    """
+    {
+    game_id: {
+        users: []
+        game_board: [[]]
+    }
+
+    """
+    games = {}
+    def on_join(self, game_data):
+        pass
+
+    def on_report_click(self, tile):
+        pass
+
+    def on_report_result(self, tile):
+        pass
+
