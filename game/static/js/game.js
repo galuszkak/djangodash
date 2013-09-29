@@ -235,6 +235,8 @@ function Game(sizeX, sizeY, canvas) {
 
     this.isCallbackEnabled = true;
 
+    this.myMove = true;
+
     this._preparePictures();
 
     this._setUpCallback();
@@ -362,7 +364,7 @@ Game.prototype._setUpCallback = function () {
         if (options.target) {
             var target = obj.callbackTiles[options.target['id']];
 
-            if (target && obj.isCallbackEnabled && obj.selectedTiles.length < obj.requiredSelection) {
+            if (obj.myMove && target && obj.isCallbackEnabled && obj.selectedTiles.length < obj.requiredSelection) {
                 obj.selectedTiles.push(target);
                 target.show();
             }

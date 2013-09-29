@@ -1,11 +1,14 @@
+import random
+
 from django.contrib.auth.models import AbstractUser
+
 from django.db import models
 
 
 class MemoUser(AbstractUser):
     pass
 
-# Create your models here.
+
 class Game(models.Model):
     STATUS_VALUES = [
         ('WA', 'WaitingForPlayers'),
@@ -16,6 +19,20 @@ class Game(models.Model):
     comment = models.CharField(max_length=255, null=True)
     host = models.ForeignKey(MemoUser, related_name='hosted_games_set', null=True)
     players = models.ManyToManyField(MemoUser)
+
+    def __init__(self):
+        self.tiles_assignment = {}
+        self.prepare_tiles_assignment()
+        pass
+
+    def prepare_tiles_assignment(self):
+        picture_indices = range(0, 40)
+        random.shuffle(picture_indices)
+        picture_indices = picture_indices[:18] * 2
+        random.shuffle(picture_indices)
+        for i in range(0, 6):
+            for j in range(0, 6):
+                self.tiles_assignment['%d-%d' % (i, j)] = picture_indices[i * 6 + j]
 
 
 class Statistic(models.Model):
