@@ -9,12 +9,21 @@ $(document).ready(function() {
     game = new Game(6, 6, canvas);
 
 
+
+
     if (interactiveMode) {
         var username = $("#username").text();
         var game_id = window.location.pathname.split('/')[2];
         var usocket = io.connect('/users');
         var gsocket = io.connect('/game');
 	
+	    gsocket.on('report_move',function(data){
+
+        })
+
+        gsocket.emit('report_click', {}//{tile_id, game_id}
+        )
+
 		gsocket.on('start', function(data) {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].username === username) {
@@ -44,7 +53,6 @@ $(document).ready(function() {
         interactiveMode = false;
     }
 
-});
 
 
 var canvas = new fabric.Canvas('gamecanvas');
@@ -271,9 +279,7 @@ function Game(sizeX, sizeY, canvas) {
 
     this._populateTiles();
 
-    if (!interactiveMode) {
-        this._setRandomPictureAssignments();
-    }
+    this._setRandomPictureAssignments();
 }
 
 Game.prototype._setRandomPictureAssignments = function () {
@@ -300,11 +306,7 @@ Game.prototype._setRandomPictureAssignments = function () {
 };
 
 Game.prototype.getPictureAssignment = function (id) {
-    if (interactiveMode) {
-
-    } else {
-        return this.pictures[this.assignments[id]];
-    }
+    return this.pictures[this.assignments[id]];
 };
 
 
@@ -414,3 +416,5 @@ Game.prototype._preparePictures = function () {
         p.push('/static/img/tiles/' + im[i]);
     }
 };
+
+});
