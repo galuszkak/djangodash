@@ -9,16 +9,17 @@ $(document).ready(function() {
 			tbl_body += "<tr id='" + users[i].username + "'><td>" + users[i].username + "</td>" + "<td>" + users[i].gamestate + "</td>";
 
 			if(username == users[i].username) {
-				tbl_body += "<td><a href=\"/gameuidemo\" class=\"btn btn-info\">It's me. Click to play.</a></td>";
+				tbl_body += "<td><a href=\"/gameuidemo\" class=\"btn btn-info\">Create game.</a></td>";
 				continue;
 			}
 			
 			if (users[i].gamestate == 1) {
-				tbl_body += "<td><button type=\"button\" class=\"btn btn-success\">Free. Invite me to play.</button></td>";
+				//tbl_body += "<td><button type=\"button\" class=\"btn btn-success\">Waiting. Click to play with me :)</button></td>";
+				tbl_body += "<td></td>";
 			} else if (users[i].gamestate == 2) {
-				tbl_body += "<td><button type=\"button\" class=\"btn btn-danger\">I'm playing. Click to watch</button></td>";
+				tbl_body += "<td><button type=\"button\" class=\"btn btn-danger\">I'm playing. Do not disturb :)</button></td>";
 			} else {
-				tbl_body += "<td><button type=\"button\" class=\"btn btn-warning\">Waiting</button></td>";
+				tbl_body += "<td><button type=\"button\" class=\"btn btn-warning\">Waiting. Click to play with me :)</button></td>";
 			}
 		}
 		$('#playerTable').append(tbl_body);

@@ -9,7 +9,7 @@ $(document).ready(function() {
 
 	usocket.emit('join',{
 		'username': username,
-		'gamestate': 2,
+		'gamestate': 3,
 	});
 
 });
