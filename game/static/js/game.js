@@ -4,13 +4,17 @@
  */
 
 $(document).ready(function() {
-	var username = $("#username").text();
-	var usocket = io.connect('/users');
+    if (interactiveMode) {
+        var username = $("#username").text();
+        var usocket = io.connect('/users');
 
-	usocket.emit('join',{
-		'username': username,
-		'gamestate': 3,
-	});
+        usocket.emit('join', {
+            'username': username,
+            'gamestate': 3
+        });
+    } else {
+        interactiveMode = false;
+    }
 
 });
 
@@ -406,4 +410,4 @@ function sampleFill(canvas) {
 }
 
 //sampleFill(canvas);
-var game = new Game(5, 4, canvas);
+var game = new Game(6, 6, canvas);
