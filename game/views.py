@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
+from braces.views import LoginRequiredMixin
 
 
 def home_view(request):
@@ -11,5 +12,5 @@ def home_view(request):
 class GameDemoView(TemplateView):
     template_name = "game_demo_ui.html"
     
-class MainView(TemplateView):
+class MainView(LoginRequiredMixin, TemplateView):
     template_name = "main_view.html"
