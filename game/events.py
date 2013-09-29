@@ -67,7 +67,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     """
     {
     game_id: {
-        users: [{'username': '', 'sessid': '' }, {'username': '', 'sessid': '' }]
+        users: [{'username': '', 'sessid': '', turn:True}, {'username': '', 'sessid': '', turn:False}]
         game_board: {}
     }
 
@@ -78,13 +78,13 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
         username = game_data['username']
         game_id = game_data['game_id']
         if game_id in self.games:
-            self.games[game_id]['users'].append({'username': username, 'sessid': self.socket.sessid})
-            self.broadcast_to_players('start', self.get_players(game_id))
+            self.games[game_id]['users'].append({'username': username, 'sessid': self.socket.sessid, 'turn': False})
+            self.broadcast_to_players('start', self.get_players(game_id), self.games[game_id]['users'])
         else:
             tiles = prepare_tiles_assignment()
             self.games[game_id] = {
                 'game_board': tiles,
-                'users': [{'username': username, 'sessid': self.socket.sessid}],
+                'users': [{'username': username, 'sessid': self.socket.sessid, 'turn': True}],
             }
 
 

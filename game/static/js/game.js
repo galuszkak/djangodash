@@ -15,11 +15,12 @@ $(document).ready(function() {
         var usocket = io.connect('/users');
         var gsocket = io.connect('/game');
 	
-		gsocket.on('start', function() {
+		gsocket.on('start', function(data) {
             usocket.emit('join', {
                 'username': username,
                 'gamestate': 2
             });
+            console.log(data);
         });
         gsocket.emit('join', {
             'username': username,
