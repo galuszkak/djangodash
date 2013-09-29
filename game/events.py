@@ -16,7 +16,7 @@ class UserNamespace(BaseNamespace, BroadcastMixin):
     def on_join(self, user):
         user['gamestate'] = GAME_STATES['AVAILABLE']
         for u in self.users:
-            if u.username == user.username:
+            if u['username'] == user['username']:
                 self.error("USER IS CONNECTED")
         self.users.append(user)
         self.emit('join', self.users)
