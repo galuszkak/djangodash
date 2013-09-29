@@ -15,7 +15,7 @@ class GameDemoView(TemplateView):
     template_name = "game_demo_ui.html"
 
 
-class GameView(View):
+class GameView(TemplateView):
     template_name = "game_ui.html"
 
 
