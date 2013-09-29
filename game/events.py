@@ -54,8 +54,18 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     games = {}
 
     def on_join(self, game_data):
-        pass
-
+        username = game_data['username']
+        game_id = game_data['game_id']
+        if game_id in games:
+            games[game_id]['username'].append({'username':username, 'sessid': self.socket.sessid})
+            self.emit('start')
+        else:
+            games[game_id] = {
+                              'users': [{'username':username, 'sessid': self.socket.sessid}],
+                              'game_board': []
+                              }
+        
+        
     def on_report_click(self, tile):
         pass
 
