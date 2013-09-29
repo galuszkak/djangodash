@@ -12,7 +12,7 @@
 
         <div class="container container-main">
             <div class="container-canvas">
-                <canvas id="gamecanvas" width="1000" height="800">
+                <canvas id="gamecanvas" width="600" height="600">
                 This is my fallback content.
                 </canvas>
             </div>
@@ -23,5 +23,6 @@
 {% block js_import %}
 {% socketio %}
     <script src="{{ STATIC_URL }}/js/fabric.js"></script>
+    <script>var interactiveMode = false;</script>
     <script src="{{ STATIC_URL }}/js/game.js"></script>
 {% endblock %}
