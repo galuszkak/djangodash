@@ -6,54 +6,6 @@
 $(document).ready(function() {
 
 
-    game = new Game(6, 6, canvas);
-
-
-
-
-    if (interactiveMode) {
-        var username = $("#username").text();
-        var game_id = window.location.pathname.split('/')[2];
-        var usocket = io.connect('/users');
-        var gsocket = io.connect('/game');
-	
-	    gsocket.on('report_move',function(data){
-
-        })
-
-        gsocket.emit('report_click', {}//{tile_id, game_id}
-        )
-
-		gsocket.on('start', function(data) {
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].username === username) {
-                    if (data[i].turn === true) {
-                        game.myMove = true;
-                    }
-                    break;
-                }
-            }
-            usocket.emit('join', {
-                'username': username,
-                'gamestate': 2
-            });
-            console.log(data);
-        });
-        gsocket.emit('join', {
-            'username': username,
-            'game_id': game_id
-        });
-
-        usocket.emit('join', {
-            'username': username,
-            'gamestate': 3,
-            'url': window.location.pathname
-        });
-    } else {
-        interactiveMode = false;
-    }
-
-
 
 var canvas = new fabric.Canvas('gamecanvas');
 
@@ -271,15 +223,18 @@ function Game(sizeX, sizeY, canvas) {
 
     this.isCallbackEnabled = true;
 
+    this.expectedPicture = -1;
+
     this.myMove = false;
 
     this._preparePictures();
 
     this._setUpCallback();
-
     this._populateTiles();
 
-    this._setRandomPictureAssignments();
+    if (!interactiveMode) {
+        this._setRandomPictureAssignments();
+    }
 }
 
 Game.prototype._setRandomPictureAssignments = function () {
@@ -306,7 +261,11 @@ Game.prototype._setRandomPictureAssignments = function () {
 };
 
 Game.prototype.getPictureAssignment = function (id) {
-    return this.pictures[this.assignments[id]];
+    if (interactiveMode) {
+        return this.pictures[this.expectedPicture];
+    } else {
+        return this.pictures[this.assignments[id]];
+    }
 };
 
 
@@ -401,8 +360,14 @@ Game.prototype._setUpCallback = function () {
             var target = obj.callbackTiles[options.target['id']];
 
             if (obj.myMove && target && obj.isCallbackEnabled && obj.selectedTiles.length < obj.requiredSelection) {
-                obj.selectedTiles.push(target);
-                target.show();
+                if (interactiveMode) {
+                    gsocket.emit('report_click', {'id': target.id, 'game_id': game_id}//{tile_id, game_id}
+                    )
+                } else {
+
+                    obj.selectedTiles.push(target);
+                    target.show();
+                }
             }
         }
     });
@@ -416,5 +381,54 @@ Game.prototype._preparePictures = function () {
         p.push('/static/img/tiles/' + im[i]);
     }
 };
+
+
+    game = new Game(6, 6, canvas);
+
+
+    if (interactiveMode) {
+        var username = $("#username").text();
+        var game_id = window.location.pathname.split('/')[2];
+        var usocket = io.connect('/users');
+        var gsocket = io.connect('/game');
+
+        gsocket.on('report_move', function (data) {
+            var target = game.callbackTiles[data['tile_id']];
+            game.expectedPicture = data['tile']
+            game.selectedTiles.push(target);
+            target.show();
+        });
+
+
+        gsocket.on('start', function (data) {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].username === username) {
+                    if (data[i].turn === true) {
+                        game.myMove = true;
+                    }
+                    break;
+                }
+            }
+            usocket.emit('join', {
+                'username': username,
+                'gamestate': 2
+            });
+            console.log(data);
+        });
+        gsocket.emit('join', {
+            'username': username,
+            'game_id': game_id
+        });
+
+        usocket.emit('join', {
+            'username': username,
+            'gamestate': 3,
+            'url': window.location.pathname
+        });
+    } else {
+        interactiveMode = false;
+        game.myMove = true;
+    }
+
 
 });

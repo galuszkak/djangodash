@@ -91,7 +91,8 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     def on_report_click(self, data):
         game_id = data['game_id']
         tile_id = data['id']
-        self.broadcast_to_players('report_move', {'tile':self.games[game_id]['game_board'][tile_id], 'tile_id':tile_id})
+        self.broadcast_to_players('report_move', self.get_players(game_id),
+                                  {'tile': self.games[game_id]['game_board'][tile_id], 'tile_id': tile_id})
 
 
     def on_report_result(self, tile):
