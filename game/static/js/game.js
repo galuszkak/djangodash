@@ -7,8 +7,8 @@
 var canvas = new fabric.Canvas('gamecanvas');
 
 
-const HIDDEN = 0;
-const SHOWN = 2;
+var HIDDEN = 0;
+var SHOWN = 2;
 
 function Tile(id, locLeft, locTop, size, canvas) {
 
@@ -215,18 +215,20 @@ function Game(sizeX, sizeY, canvas) {
             var target = obj.callbackTiles[options.target['id']];
 
             if (target && obj.isCallbackEnabled) {
-                target.toggle();
+                target.show();
             }
         }
     });
 
-    this._preparePictures = function () {
-        var p = obj.pictures;
-        p[p.length] = 'https://si0.twimg.com/profile_images/1144713032/Red_Star_Stamp.jpg';
-        p[p.length] = '';
-    };
+    this._preparePictures();
 
 }
+
+Game.prototype._preparePictures = function () {
+    var p = obj.pictures;
+    p[p.length] = 'https://si0.twimg.com/profile_images/1144713032/Red_Star_Stamp.jpg';
+    p[p.length] = '';
+};
 
 
 function sampleFill(canvas) {
