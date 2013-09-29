@@ -10,7 +10,7 @@ var canvas = new fabric.Canvas('gamecanvas');
 var HIDDEN = 0;
 var SHOWN = 2;
 
-function Tile(id, locLeft, locTop, size, canvas) {
+function Tile(id, locLeft, locTop, size, canvas, game) {
 
     this.size = size;
 
@@ -40,18 +40,19 @@ function Tile(id, locLeft, locTop, size, canvas) {
     this.animationPointsArray[1] = this.endPoints;
     this.animationPointsArray[2] = this.middlePoints;
     this.animationPointsArray[3] = this.startPoints;
-
-
     this.defaultColor = 'green';
+
+
     this.canvas = canvas;
     this.locLeft = locLeft;
     this.locTop = locTop;
     this.id = id;
-
     this.rotationState = 0;
-    this.animationTime = 400;
+
+    this.animationTime = game.animationTime;
     this.animationProgress = 0;
     this.inMove = false;
+    this.game = game;
 //    this.picture = null;
 
     this.pictureUrl = 'https://si0.twimg.com/profile_images/1144713032/Red_Star_Stamp.jpg';
@@ -74,6 +75,13 @@ Tile.prototype.putOnBoard = function () {
 
     canvas.add(this.polygon);
 };
+
+Tile.prototype.removeFromBoard = function () {
+    if (this.polygon) {
+        this.canvas.remove(this.polygon);
+        this.canvas.renderAll();
+    }
+}
 
 Tile.prototype.addToCallbackCollection = function (collection) {
     collection[this.id] = this;
@@ -125,13 +133,11 @@ Tile.prototype.animatePoint = function (i, prop, animationTime, endPoints, targe
             }
         },
         onComplete: function () {
-            console.log("ONCOMPLETE");
             target.setCoords();
             if (i === obj.startPoints.length - 1 && prop === 'y' && target === obj.polygon) {
                 // only start animation once
                 obj.animationProgress += 1;
                 obj.rotationState = (obj.rotationState + 1) % obj.animationPointsArray.length;
-                console.log(obj.rotationState);
                 if (obj.animationProgress < 2) {
                     obj.animate();
                 } else {
@@ -144,7 +150,6 @@ Tile.prototype.animatePoint = function (i, prop, animationTime, endPoints, targe
 };
 
 Tile.prototype.animate = function () {
-    console.log("START ANIMATE");
     if (this.rotationState == 1) {
 //        this.polygon.set('fill', this.defaultColor);///*this.picture = */
         this.fillObject(this.polygon, this.pictureUrl);
@@ -163,7 +168,6 @@ Tile.prototype.animate = function () {
             this.animatePoint(i, 'x', this.animationTime, this.animationPointsArray[this.rotationState], this.polygon);
             this.animatePoint(i, 'y', this.animationTime, this.animationPointsArray[this.rotationState], this.polygon);
         }
-        console.log("END ANIMATE");
     };
 
 Tile.prototype.restrictedMove = function (fn) {
@@ -175,6 +179,7 @@ Tile.prototype.restrictedMove = function (fn) {
 
 Tile.prototype.movementEnded = function () {
     this.inMove = false;
+    this.game.selectionCallback();
 };
 
 Tile.prototype.toggle = function () {
@@ -187,14 +192,14 @@ Tile.prototype.toggle = function () {
 };
 
 Tile.prototype.show = function () {
-    if (this.rotationState = HIDDEN) {
+    if (this.rotationState === HIDDEN) {
         this.toggle();
     }
 };
 
 
 Tile.prototype.hide = function () {
-    if (this.rotationState = SHOWN) {
+    if (this.rotationState === SHOWN) {
         this.toggle();
     }
 };
@@ -202,11 +207,91 @@ Tile.prototype.hide = function () {
 function Game(sizeX, sizeY, canvas) {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
+    this.size = 100;
+    this.requiredSelection = 2;
+    this.canvas = canvas;
+    this.animationTime = 400;
+
+    if ((sizeX * sizeY) % this.requiredSelection !== 0) {
+        throw Error("Invalid config, cleaning the board will be impossible.");
+    }
 
     this.callbackTiles = {};
     this.pictures = [];
+    this.selectedTiles = [];
 
     this.isCallbackEnabled = true;
+
+    this._preparePictures();
+
+    this._setUpCallback();
+
+    this._populateTiles();
+}
+
+
+Game.prototype.selectionCallback = function () {
+    var obj = this;
+    if (this.selectedTiles.length >= this.requiredSelection) {
+        setTimeout(function () {
+            obj.removeOrHide.apply(obj)
+        }, 500);
+    }
+};
+
+Game.prototype.removeOrHide = function () {
+    this.isCallbackEnabled = false;
+    var obj = this;
+    var timeout = (this.selectedTiles.length + 1) * this.animationTime / 2;
+    if (this.requiredSelection < this.selectedTiles.length) {
+        Console.log(this.selectedTiles.length + " tiles selected, " + this.requiredSelection + " expected");
+    }
+    if (false) {
+        this.manipulateTiles(Tile.prototype.hide);
+
+    } else {
+        this.manipulateTiles(Tile.prototype.removeFromBoard);
+
+    }
+    setTimeout(function () {
+        obj.isCallbackEnabled = true;
+    }, timeout);
+
+};
+
+Game.prototype.manipulateTiles = function (fn) {
+    for (var i = 0; i < this.selectedTiles.length; i++) {
+        var tile = this.selectedTiles[i];
+        console.log("hiding " + tile.id + " in " + i * this.animationTime / 2 + " ms");
+        (function (tile) {
+            setTimeout(function () {
+                fn.call(tile);
+            }, i * tile.animationTime / 2)
+        })(tile);
+    }
+    this.selectedTiles.splice(0, this.selectedTiles.length);
+
+};
+//removeFromBoard
+Game.prototype._populateTiles = function () {
+
+    for (var c = 0, r = 0; r < this.sizeY;) {
+
+        var tile = new Tile(r + '-' + c, this.size / 2 + c * this.size, this.size / 2 + r * this.size, 0.95 * this.size, this.canvas, this);
+        tile.putOnBoard();
+        tile.addToCallbackCollection(this.callbackTiles);
+
+        if (c === this.sizeX) {
+            r++;
+            c = 0;
+        } else {
+            c++;
+        }
+    }
+
+};
+
+Game.prototype._setUpCallback = function () {
 
     var obj = this;
 
@@ -214,18 +299,17 @@ function Game(sizeX, sizeY, canvas) {
         if (options.target) {
             var target = obj.callbackTiles[options.target['id']];
 
-            if (target && obj.isCallbackEnabled) {
+            if (target && obj.isCallbackEnabled && obj.selectedTiles.length < obj.requiredSelection) {
+                obj.selectedTiles.push(target);
                 target.show();
             }
         }
     });
 
-    this._preparePictures();
-
-}
+};
 
 Game.prototype._preparePictures = function () {
-    var p = obj.pictures;
+    var p = this.pictures;
     p[p.length] = 'https://si0.twimg.com/profile_images/1144713032/Red_Star_Stamp.jpg';
     p[p.length] = '';
 };
@@ -248,7 +332,7 @@ function sampleFill(canvas) {
 
     for (var c = 0, r = 0; r < rows;) {
 
-        var tile = new Tile(r + '-' + c, 50 + c * 100, 50 + r * 100, 95, canvas);
+        var tile = new Tile(r + '-' + c, 50 + c * 100, 50 + r * 100, 95, canvas, null);
         tile.putOnBoard();
         tile.addToCallbackCollection(tiles);
 
@@ -261,4 +345,5 @@ function sampleFill(canvas) {
     }
 }
 
-sampleFill(canvas);
+//sampleFill(canvas);
+var game = new Game(10, 8, canvas);
