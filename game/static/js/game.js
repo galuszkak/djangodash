@@ -16,6 +16,14 @@ $(document).ready(function() {
         var gsocket = io.connect('/game');
 	
 		gsocket.on('start', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].username === username) {
+                    if (data[i].turn === true) {
+                        game.myMove = true;
+                    }
+                    break;
+                }
+            }
             usocket.emit('join', {
                 'username': username,
                 'gamestate': 2
@@ -263,7 +271,9 @@ function Game(sizeX, sizeY, canvas) {
 
     this._populateTiles();
 
-    this._setRandomPictureAssignments();
+    if (!interactiveMode) {
+        this._setRandomPictureAssignments();
+    }
 }
 
 Game.prototype._setRandomPictureAssignments = function () {
@@ -290,7 +300,11 @@ Game.prototype._setRandomPictureAssignments = function () {
 };
 
 Game.prototype.getPictureAssignment = function (id) {
-    return this.pictures[this.assignments[id]];
+    if (interactiveMode) {
+
+    } else {
+        return this.pictures[this.assignments[id]];
+    }
 };
 
 
