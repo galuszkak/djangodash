@@ -1,6 +1,20 @@
+import random
+
 from django_socketio.events import Namespace
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
+
+
+def prepare_tiles_assignment(self):
+    tiles_assignment = {}
+    picture_indices = range(0, 40)
+    random.shuffle(picture_indices)
+    picture_indices = picture_indices[:18] * 2
+    random.shuffle(picture_indices)
+    for i in range(0, 6):
+        for j in range(0, 6):
+            self.tiles_assignment['%d-%d' % (i, j)] = picture_indices[i * 6 + j]
+    return tiles_assignment
 
 
 GAME_STATES = {
