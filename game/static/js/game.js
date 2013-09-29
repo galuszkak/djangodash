@@ -6,9 +6,7 @@
 
 var canvas = new fabric.Canvas('gamecanvas');
 
-var tiles = {};
-
-function Tile(id, locLeft, locTop, size) {
+function Tile(id, locLeft, locTop, size, canvas) {
 
     const HIDDEN = 0;
     const SHOWN = 2;
@@ -46,7 +44,7 @@ function Tile(id, locLeft, locTop, size) {
     this.rotationState = 0;
     this.animationTime = 400;
     this.animationProgress = 0;
-    this.picture = null;
+//    this.picture = null;
 
     this.pictureUrl = 'https://si0.twimg.com/profile_images/1144713032/Red_Star_Stamp.jpg';
 
@@ -65,13 +63,18 @@ function Tile(id, locLeft, locTop, size) {
     });
 
     canvas.add(this.polygon);
-    tiles[id] = this;
+
+    this.addToCallbackCollection = function (collection) {
+        collection[id] = this;
+    };
+
 
     this.fillObject = function (objectToFill, pictureUrl) {
 
         fabric.Image.fromURL(pictureUrl, function (img) {
 
-            img.scaleToWidth(size).set({
+            img.scaleToWidth(size);
+            img.set({
                 originX: 'left',
                 originY: 'top'
             });
@@ -130,19 +133,19 @@ function Tile(id, locLeft, locTop, size) {
     this.animate = function () {
         console.log("START ANIMATE");
         if (this.rotationState == 1) {
-            this.polygon.set('fill', this.picture = this.fillObject(this.polygon, this.pictureUrl));
+            this.polygon.set('fill', /*this.picture = */this.fillObject(this.polygon, this.pictureUrl));
         } else if (this.rotationState == 3) {
             this.polygon.set('fill', this.defaultColor);
-            this.picture = null;
+//            this.picture = null;
         }
 
         for (var i = 0, len = this.startPoints.length; i < len; i++) {
 
-            //if (this.picture !== null) {
-            //  this.animatePoint(i, 'x', this.animationTime, this.animationPointsArray[this.rotationState], this.picture);
-            //this.animatePoint(i, 'y', this.animationTime, this.animationPointsArray[this.rotationState], this.picture);
-
-            //}
+//            if (this.picture !== null) {
+//              this.animatePoint(i, 'x', this.animationTime, this.animationPointsArray[this.rotationState], this.picture);
+//            this.animatePoint(i, 'y', this.animationTime, this.animationPointsArray[this.rotationState], this.picture);
+//
+//            }
             this.animatePoint(i, 'x', this.animationTime, this.animationPointsArray[this.rotationState], this.polygon);
             this.animatePoint(i, 'y', this.animationTime, this.animationPointsArray[this.rotationState], this.polygon);
         }
@@ -167,25 +170,38 @@ function Tile(id, locLeft, locTop, size) {
     };
 }
 
+function Game() {
 
-canvas.on('mouse:down', function (options) {
-    if (options.target) {
-        console.log('an object was clicked! ', options.target.type);
-        var target = tiles[options.target['id']];
-        target.toggle();
-    }
-});
+}
 
-var rows = 8;
-var cols = 10;
 
-for (var c = 0, r = 0; r < rows;) {
+function sampleFill(canvas) {
 
-    new Tile(r + '-' + c, 50 + c * 100, 50 + r * 100, 95);
-    if (c === cols) {
-        r++;
-        c = 0;
-    } else {
-        c++;
+    var tiles = {};
+
+    canvas.on('mouse:down', function (options) {
+        if (options.target) {
+            console.log('an object was clicked! ', options.target.type);
+            var target = tiles[options.target['id']];
+            target.toggle();
+        }
+    });
+
+    var rows = 8;
+    var cols = 10;
+
+    for (var c = 0, r = 0; r < rows;) {
+
+        var tile = new Tile(r + '-' + c, 50 + c * 100, 50 + r * 100, 95, canvas);
+        tile.addToCallbackCollection(tiles);
+
+        if (c === cols) {
+            r++;
+            c = 0;
+        } else {
+            c++;
+        }
     }
 }
+
+sampleFill(canvas);
