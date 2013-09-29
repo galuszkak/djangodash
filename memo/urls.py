@@ -2,8 +2,7 @@ import re
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from game.views import GameDemoView, MainView 
-
+from game.views import GameDemoView, MainView, AboutView
 
 
 admin.autodiscover()
@@ -19,6 +18,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^gameuidemo/$', GameDemoView.as_view()),
+    url(r'^about/$', AboutView.as_view()),
     url(r'^mainview/$', MainView.as_view()),
 
     # Uncomment the next line to enable the admin:

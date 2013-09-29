@@ -12,24 +12,31 @@ GAME_STATES = {
 @Namespace('/users')
 class UserNamespace(BaseNamespace, BroadcastMixin):
     users = []
+    logged_in = {}
 
     def on_join(self, user):
-        user['gamestate'] = GAME_STATES['AVAILABLE']
-        for u in self.users:
-            if u.username == user.username:
-                self.error("user_connected", "User is connected")
-        self.users.append(user)
+        #import ipdb; ipdb.set_trace();
+        if not 'gamestate' in user:
+            user['gamestate'] = GAME_STATES['AVAILABLE']
+        if any(filter(lambda u: u['username'] == user['username'], self.users)):
+            self.error("user_connected", "User is connected")     
+            self.logged_in[user['username']] = self.socket.sessid
+        else:
+            self.logged_in[user['username']] = self.socket.sessid
+            self.users.append(user)
+            print 'JOIN ' + user['username']
+            self.broadcast_event_not_me('connected', user)
+        print self.users
         self.emit('join', self.users)
-        self.broadcast_event_not_me('connected', user)
-
+        
     def recv_disconnect(self):
-        # Remove nickname from the list.
-        # TODO
-        # self.log('Disconnected')
-        # nickname = self.socket.session['nickname']
-        # self.nicknames.remove(nickname)
-        # self.broadcast_event('announcement', '%s has disconnected' % nickname)
-        # self.broadcast_event('nicknames', self.nicknames)
-        # self.disconnect(silent=True)
-        # return True
-        pass
+        user_list = filter(lambda (user, sessid):sessid==self.socket.sessid, self.logged_in.items())
+
+        if any(user_list):            
+            self.logged_in.pop(user_list[0][0])
+            user = [user for user in self.users if user['username'] == user_list[0][0]][0]
+            self.users.remove(user)
+            self.broadcast_event_not_me('left', user)
+        return True
+    
+    
