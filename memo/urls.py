@@ -2,7 +2,7 @@ import re
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from game.views import GameDemoView, MainView, AboutView
+from game.views import GameDemoView, MainView, AboutView, GameView
 
 
 admin.autodiscover()
