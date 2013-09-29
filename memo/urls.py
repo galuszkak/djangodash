@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url("", include("django_socketio.urls")),
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^gameuidemo/$', GameDemoView.as_view()),

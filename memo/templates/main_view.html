@@ -1,4 +1,5 @@
 {% extends 'base_index.html' %}
+{% load socketio_tags %}
 {% block content %}
 
     <!-- Main component for a primary marketing message or call to action -->
@@ -19,11 +20,12 @@
 
 {% endblock %}
 {% block js_import %}
-    <script src="{{ STATIC_URL }}/js/fabric.js"></script>
-
+{% socketio %}
+<script src="{{ STATIC_URL }}/js/fabric.js"></script>
 <script>
 	$(document).ready(function(){
-		var json = '{"players" : [	{"username":"tomek","gamestate":0},{"username":"rysiek","gamestate":1}, {"username":"kamil","gamestate":2}]}';
+
+        var json = '{"players" : [	{"username":"tomek","gamestate":0},{"username":"rysiek","gamestate":1}, {"username":"kamil","gamestate":2}]}';
 		obj = JSON.parse(json);
 		var tbl_body = "";
 		for (var i = 0; i < obj.players.length; i++) {
