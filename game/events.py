@@ -15,12 +15,14 @@ class UserNamespace(BaseNamespace, BroadcastMixin):
 
     def on_join(self, user):
         user['gamestate'] = GAME_STATES['AVAILABLE']
-        for u in self.users:
-            if u['username'] == user['username']:
-                self.error("USER IS CONNECTED")
-        self.users.append(user)
+        if any(filter(lambda u: u['username'] == user['username'], self.users)):
+            self.error("user_connected", "User is connected")     
+        else:
+            self.users.append(user)
+            self.broadcast_event_not_me('connected', user)
+        
         self.emit('join', self.users)
-        self.broadcast_event_not_me('connected', user)
+        
 
     def recv_disconnect(self):
         # Remove nickname from the list.
